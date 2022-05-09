@@ -8,7 +8,7 @@ def clearConsole():
     os.system(command)
 
 def mostrarProducto(lista, valores):
-    clearConsole()
+
     print("+----------+--------------------+----------+")
     print("|    ID    |       NOMBRE       |  PRECIO  |")
     print("+----------+--------------------+----------+")
@@ -27,13 +27,18 @@ cuenta = []
 cuentaPrecio = []
  
 while True:
+    clearConsole()
     print("""
+
+
 ***************************************
 
           -- MINI COBRADOR --
          willyescobar@gmail.com
 
 ***************************************
+
+
 """)
     eleccion = input("""
 1 - Agregar un producto al inventario
@@ -62,6 +67,7 @@ Seleccione: """)
             else:
                 nombres.append(nombre)
                 precios.append(precio)
+                print("+----------+-----INVENTARIO-----+----------+")
                 mostrarProducto(nombres, precios)   
                 break
 
@@ -75,7 +81,9 @@ Seleccione: """)
 
 Presione una tecla para continuar...""")  
             continue
-        else:          
+        else:
+            clearConsole()
+            print("+----------+-----INVENTARIO-----+----------+")          
             mostrarProducto(nombres, precio)   
             id = input("Ingresar ID del producto a eliminar: ")
             if id=="":
@@ -83,14 +91,16 @@ Presione una tecla para continuar...""")
             else:
                 id = int(id)
                 if not id in range(0,len(nombres)):
+                    clearConsole()
+                    print("+----------+-----INVENTARIO-----+----------+")
                     mostrarProducto(nombres, precio) 
                     id = input("Debe Ingresar ID de producto EXISTENTE para eliminar: ")
             if id=="" or (not int(id) in range(0,len(nombres))):
                 continue            
             print( f"El producto {nombre}, (id: {id}) ha sido eliminado del inventario")
-            nombre = nombres[id]
-            nombres.pop(id)
-            precios.pop(id) 
+            nombre = nombres[int(id)]
+            nombres.pop(int(id))
+            precios.pop(int(id))
 
 
     if eleccion == "3":  
@@ -104,6 +114,8 @@ Presione una tecla para continuar...""")
 Presione una tecla para continuar...""")  
             continue
         else:
+            clearConsole()
+            print("+----------+-----INVENTARIO-----+----------+")
             mostrarProducto(nombres, precio)     
 #
         while True:
@@ -128,34 +140,93 @@ Presione una tecla para continuar...""")
             
 
     if eleccion == "4":
-        clearConsole()           
-        id = int(input("Ingresar ID a retirar de la cuenta: "))
-        if id in cuenta:
-            del cuenta[id]
-            print("Producto retirado de la cuenta exitosamente")
+
+        if len(cuenta)==0:
+            input("""
+            
+            ***************************************
+            *  No existen productos en su Cuenta  *
+            ***************************************
+
+Presione una tecla para continuar...""")  
+            continue
         else:
-            print("Producto no existente en la cuenta")
-        continue
+            clearConsole()
+            print("+----------+-------CUENTA-------+----------+")             
+            mostrarProducto(cuenta, cuentaPrecio)  
+            id = input("Ingresar ID del producto a eliminar: ")
+            if id=="":
+                continue
+            else:
+                id = int(id)
+                if not id in range(0,len(cuenta)):
+                    clearConsole()
+                    print("+----------+-------CUENTA-------+----------+")
+                    mostrarProducto(cuenta, cuentaPrecio) 
+                    id = input("Debe Ingresar ID de producto EXISTENTE en su CUENTA: ")
+            if id=="" or (not int(id) in range(0,len(cuenta))):
+                continue            
+
+            nombre = cuenta[id]
+            cuenta.pop(id)
+            cuentaPrecio.pop(id) 
+            print( f"El producto {nombre}, (id: {id}) ha sido eliminado desu cuenta")
+
+        # clearConsole()           
+        # id = int(input("Ingresar ID a retirar de la cuenta: "))
+        # if id in cuenta:
+        #     del cuenta[id]
+        #     print("Producto retirado de la cuenta exitosamente")
+        # else:
+        #     print("Producto no existente en la cuenta")
+        # continue
 
     if eleccion == "5":
-        clearConsole()  
+        clearConsole() 
+        print("+----------+-----INVENTARIO-----+----------+")   
         mostrarProducto(nombres, precios)   
         if input("Presione un tecla para continuar...") == "s":    
             continue  
 
     if eleccion == "6":
-        clearConsole()  
-        mostrarProducto(cuenta, cuentaPrecio) 
-        if input("Continuar (s/n): ") == "s":    
+   #     clearConsole()  
+        if len(nombres)==0:
+            input("""
+            
+            ***************************************
+            *  No existen productos en su cuenta  *
+            ***************************************
+
+Presione una tecla para continuar...""")  
+            continue
+        else:
+            clearConsole()
+            print("+----------+-------CUENTA-------+----------+")              
+            mostrarProducto(cuenta, cuentaPrecio) 
+            input("Presione una tecla para continuar...")  
             continue
 
     if eleccion == "7":
-        clearConsole()
-        if input("Seguro (s/n): ") == "s":
-            suma = sum(cuentaPrecio) 
-            print(f"¡Gracias por su compra! -- Su Total es: {float(suma)}")
-            sys.exit()
+  #      clearConsole()
+        if len(cuenta)==0:
+            input("""
+            
+            ***************************************
+            *   No existen productos paa cobrar   *
+            ***************************************
+
+Presione una tecla para continuar...""")  
+            continue
+        else:
+            clearConsole()
+            print("+----------+-------CUENTA-------+----------+")
+            mostrarProducto(cuenta, cuentaPrecio) 
+            if input("Seguro (s/n): ") == "s":
+                suma = sum(cuentaPrecio) 
+                print(f"¡Gracias por su compra! -- Su Total es: {float(suma)}")
+                sys.exit()
 
     if eleccion == "8":
         if input("Seguro (s/n): ") == "s":
+            clearConsole()
             sys.exit()
