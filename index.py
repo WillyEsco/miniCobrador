@@ -1,12 +1,10 @@
-
-
 import sys
 import os
 
 def clearConsole():
     command = 'clear'
     if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
-        command = 'cls'
+        command = 'cls' 
     os.system(command)
 
 def mostrarProducto(lista, valores):
@@ -17,7 +15,7 @@ def mostrarProducto(lista, valores):
     indice = 0
     while indice < len(lista):
         nombre = lista[indice]
-        precio = valores[indice]   
+        precio = precios[indice]   
         print("|{:>10}|{:<20}|{:>10.2f}|".format(indice, nombre, precio))
         print("+----------+--------------------+----------+")
         indice = indice + 1
@@ -50,41 +48,84 @@ Seleccione: """)
     if eleccion == "1":
         clearConsole()
         nombre = input("Nombre del producto: ")
-        precio = float(input("Precio del producto: "))
-        nombres.append(nombre)
-        precios.append(precio)
-        mostrarProducto(nombres, precios)   
-        continue
+
+        while True:
+            try:
+                precio = float(input("Precio del producto: "))            
+            except ValueError:
+                print("Debes escribir un número.")
+                continue
+
+            if precio < 0:
+                print("El precio debe ser un número positivo.")
+                continue
+            else:
+                nombres.append(nombre)
+                precios.append(precio)
+                mostrarProducto(nombres, precios)   
+                break
 
     if eleccion == "2":
-        mostrarProducto(nombres, precios)   
-        id = int(input("Ingresar ID del producto a eliminar: "))
-        print( f"Remover {nombre}. id: {id}")
-        if input("Seguro (s/n): ") == "s":
-            if id < len(nombres):
-                nombre = nombres[id]
-                nombres.pop(id)
-                precios.pop(id) 
-                if id in cuenta:
-                    cuenta.pop(id)
-                    price = precios(id)
-                    cuentaPrecio.remove(price)
-                    mostrarProducto(nombres, precios)  
-                    print( f"Se remueve  {nombre}. id: {id}")
-                else:
-                   continue
+        if len(nombres)==0:
+            input("""
+            
+            ***************************************
+            *  No existen productos en invetario  *
+            ***************************************
 
-    if eleccion == "3":
-        mostrarProducto(cuenta, cuentaPrecio)             
-        id = int(input("Ingresar ID a añadir a la cuenta: "))
+Presione una tecla para continuar...""")  
+            continue
+        else:          
+            mostrarProducto(nombres, precio)   
+            id = input("Ingresar ID del producto a eliminar: ")
+            if id=="":
+                continue
+            else:
+                id = int(id)
+                if not id in range(0,len(nombres)):
+                    mostrarProducto(nombres, precio) 
+                    id = input("Debe Ingresar ID de producto EXISTENTE para eliminar: ")
+            if id=="" or (not int(id) in range(0,len(nombres))):
+                continue            
+            print( f"El producto {nombre}, (id: {id}) ha sido eliminado del inventario")
+            nombre = nombres[id]
+            nombres.pop(id)
+            precios.pop(id) 
+
+
+    if eleccion == "3":  
+        if len(nombres)==0:
+            input("""
+            
+            ***************************************
+            *  No existen productos en invetario  *
+            ***************************************
+
+Presione una tecla para continuar...""")  
+            continue
+        else:
+            mostrarProducto(nombres, precio)     
+#
+        while True:
+            try:
+                id = int(input("Ingresar ID a añadir a la cuenta: "))         
+            except ValueError:
+                print("Debes escribir un número.")
+                continue     
+            if id in range(0,len(nombres)):
+                break
+            else:
+                print("Debes ingresar un id existente en el inventario.")
+                continue
+
         if id not in cuenta:
-            cuenta.append(id)
-            elemento = precios(id)
-            cuentaPrecio.append(elemento)
+            cuenta.append(nombres[id])
+            cuentaPrecio.append(precios[id])
+
             print("Producto ingresado en la cuenta exitosamente")
         else:
             print("Producto previamente ingresado en la cuenta")
-        continue
+            
 
     if eleccion == "4":
         clearConsole()           

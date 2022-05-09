@@ -51,6 +51,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+# mis archivo de soporte
+gfe.py
+
 # Translations
 *.mo
 *.pot
